@@ -96,7 +96,7 @@ const styles =StyleSheet.create({
         borderColor:'grey',
         marginVertical:10,
         elevation:4,
-        paddingHorizontal:11,
+        paddingHorizontal:10,
         borderRadius:5,
     }
 
