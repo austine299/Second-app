@@ -10,16 +10,16 @@ class StartGameScreen extends Component {
       confirmed: false
     } 
   
-    componentDidMount = () => {
-      this.setState({enteredValue: "90" })
-      this.confirmInputHandler()
-    }
+    // componentDidMount = () => {
+    //   this.setState({enteredValue: "90" })
+    //   this.confirmInputHandler()
+    // }
 
     numberInputHandler = inputText =>{
         this.setState({ enteredValue: inputText.replace(/[^0-9]/g, '') })
     }; 
 
-    resetInputHandler = () => {a
+    resetInputHandler = () => {
         this.seState({
           enteredValue: false,
           confirmed: false,
