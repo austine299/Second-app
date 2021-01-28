@@ -1,67 +1,84 @@
-import React, {useState} from 'react';
+import React, {Component} from 'react';
 import {View, Text, StyleSheet, TextInput, Button} from 'react-native';
 
 import Cards from '../Components/Cards';
 
 
-const StartGameScreen = props => {
+class StartGameScreen extends Component {
+    state = {
+      enteredValue: false,
+      confirmed: false
+    } 
+  
+    componentDidMount = () => {
+      this.setState({enteredValue: "90" })
+      this.confirmInputHandler()
+    }
 
-
-    const [ enteredValue, setEnteredValue ] = useState('');
-    const [confirmed, setConfirmed] = useState(false);
-    const [ selectedNumber, setSelectedNumber ] = useState();
-
-    const numberInputHandler = inputText =>{
-        setEnteredValue (inputText.replace(/[^0-9]/g, ''));
+    numberInputHandler = inputText =>{
+        this.setState({ enteredValue: inputText.replace(/[^0-9]/g, '') })
     }; 
 
-    const resetInputHandler = () =>{
-        setEnteredValue(''); 
-        setConfirmed(false);
+    resetInputHandler = () => {a
+        this.seState({
+          enteredValue: false,
+          confirmed: false,
+          confiremedNumber: undefined
+        })
     }
 
-    const confirmInputHandler = () => {
-        const chosenNumber = parseInt(enteredValue);
-        if (chosenNumber === NaN || chosenNumber <= 0 || chosenNumber > 99){
+    confirmInputHandler = () => {
+        const chosenNumber = parseInt(this.state.enteredValue);
+        if ( isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99){
             return;
         }
-        setConfirmed(true);
-        setEnteredValue(chosenNumber);
-        setSelectedNumber('');
+        this.setState({
+          confirmed: true,
+          confiremedNumber: this.state.enteredValue
+        })
     };
 
-    let confirmedOutPut;
 
-    if (confirmed){
-        confirmedOutPut= <Text> Chosen Number: {selectedNumber}</Text>
-    }
-    return(
-        <View style={styles.screen}>
-            <Text style={styles.title}>Start a New game </Text>
-            <Cards style={ styles.inputContainer}>
-                <Text>Select a Number</Text>
-                <TextInput style ={styles.input} 
-                    blurOnSubmit 
-                    autoCapitalize='none' 
-                    autoCorrect={false} 
-                    keyboardType="numeric" 
-                    maxLength={2} 
-                    onChangeText={numberInputHandler}
-                    value ={enteredValue}
+    render = () => {
+      console.log("call")
+      return(
+          <View style={styles.screen}>
+              <Text style={styles.title}>Start a New game </Text>
+              <Cards style={ styles.inputContainer}>
+                  <Text>Select a Number</Text>
+                  <TextInput style ={styles.input} 
+                      blurOnSubmit 
+                      autoCapitalize='none' 
+                      autoCorrect={false} 
+                      keyboardType="numeric" 
+                      maxLength={2} 
+                      onChangeText={this.numberInputHandler}
+                      value ={this.state.enteredValue}
 
-                />
-                <View style ={ styles.btnContainer}>
-                    <View style={styles.btn}>
-                        <Button title="Reset" color="red" onPress={resetInputHandler}/>
-                    </View>
-                    <View style={styles.btn}>
-                        <Button style={styles.btn}  title="Confirm" onPress={confirmInputHandler}/>
-                    </View>
-                </View>
-            </Cards>
-            {confirmedOutPut}
-        </View>
-    );
+                  />
+                  <View style ={ styles.btnContainer}>
+                      <View style={styles.btn}>
+                          <Button
+                            title="Reset"
+                            onPress={this.resetInputHandler}
+                          />
+                      </View>
+                      <View style={styles.btn}>
+                          <Button
+                           style={styles.btn}
+                           title="Confirm"
+                           onPress={this.confirmInputHandler}
+                          />
+                      </View>
+                  </View>
+              </Cards>
+              {
+                this.state.confiremedNumber &&
+                (<Text>{this.state.confiremedNumber}</Text>)
+              }
+          </View>
+      );
+  }
 };
 
 const styles =StyleSheet.create({
@@ -96,10 +113,11 @@ const styles =StyleSheet.create({
         borderColor:'grey',
         marginVertical:10,
         elevation:4,
-        paddingHorizontal:11,
+        paddingHorizontal:10,
         borderRadius:5,
     }
 
 });
 
 export default StartGameScreen;
+
